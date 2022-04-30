@@ -1,0 +1,36 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  .btn_click_me{
+    font-size: 1.2rem;
+    /* background-color: rgb(58, 242, 107); */
+    border:solid 1px black;
+    padding: 1px;
+    border-radius: 30%;
+    padding: 10px;
+  }
+  .btn_click_me:hover{
+    border: inset 2px black;
+    padding: 0;
+  }
+  .users_list{
+    text-decoration: none;
+    list-style: none;
+  }
+  .table_title{
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  .users_table{
+    border-spacing: 0;
+    font-size: 1.2rem;
+  }
+  .users_table th{
+  min-width: 70px;
+  border: solid 1px black;
+  }
+  
