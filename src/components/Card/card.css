@@ -1,12 +1,11 @@
 .card_container{
     width: 19vw;
-    min-height: 440px;
-    height: 33vh;
+    /* min-height: 440px; */
+    /* height: 56vh; */
+    height: 30vw;
     background-repeat: no-repeat;
-    background-size: contain;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
+    background-size: cover;
+    position: relative;
     /* padding: 0 10%; */
     opacity: 95%;
     overflow-x:hidden;
@@ -20,17 +19,22 @@
     transform: scale(1.05);
     z-index:2;
 }
+.card_details{
+    position: absolute;
+    bottom: 5%;
+    padding: 0 5%;
+    width: 90%;
+}
 .rating_stars{
     color: #FFFFFF !important;
-    border-color: #ffffff;;
+    border-color: #ffffff;
 }
 .film_title{
     font-family: 'Roboto' sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 1.4rem;
+    font-size: 1.4em;
     line-height: 32px;
-    color: #FFFFFF;
     max-width: 90%;
     margin: 2% 0;
 

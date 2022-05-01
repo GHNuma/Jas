@@ -1,7 +1,13 @@
 .filter_container{
 height: 5vh;
 display: flex;
-justify-content: space-evenly;
+justify-content: center;
+align-items: center;
+}
+.filter_content{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 .main_content{
   display: grid;
@@ -10,4 +16,9 @@ justify-content: space-evenly;
   row-gap: 20px;
   place-content: center;
   padding: 3vh 6vw ;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
