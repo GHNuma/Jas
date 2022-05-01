@@ -1,7 +1,12 @@
-import React from 'react'
+import React,{FC} from 'react'
 import "./card.css"
 import { Rating } from '@mui/material'
-export default function Card({info}) {
+import {IFilm} from "../types/types"
+interface CardProps {
+  info:IFilm
+}
+
+const Card:FC<CardProps>=({info}) => {
   return (
     <div 
       className='card_container' 
@@ -26,3 +31,5 @@ export default function Card({info}) {
     </div>
   )
 }
+
+export default Card;

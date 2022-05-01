@@ -1,44 +1,57 @@
 import './App.css';
-import { useState, useEffect,startTransition } from 'react';
+import { useState, useEffect, startTransition } from 'react';
 // import Lesson1 from "./components/Lesson_1/Lesson1.jsx"
 import axios from "axios"
 import Card from './components/Card/Card';
 import { Switch, FormGroup, FormControlLabel,FormControl, Input, Pagination, Skeleton } from '@mui/material';
-function App() {
-  
-  const Base_URL="https://api.themoviedb.org/3/search/movie?"
-  const api_key="d65708ab6862fb68c7b1f70252b5d91c"
+import { ChangeEvent } from 'react';
+import { ICatalog } from './components/types/types';
 
-  const [loading,setLoading]=useState(false)
-  const [filmsData, setFilmsData]=useState([])
-  const [page,setPage]=useState(1)
-  const [filterSettings,setFilterSettings]=useState({
-    adult:false,
-    video:false,
+interface IFilterSettings{
+  isAdult:boolean,
+  withVideo:boolean,
+  searching:string
+}
+
+const App = () => {
+  
+  const Base_URL:string="https://api.themoviedb.org/3/search/movie?"
+  const api_key:string="d65708ab6862fb68c7b1f70252b5d91c"
+
+  const [loading,setLoading]=useState<boolean>(false)
+  const [filmsData, setFilmsData]=useState<ICatalog>()
+  const [page,setPage]=useState<number>(1)
+  const [filterSettings,setFilterSettings]=useState<IFilterSettings>({
+    isAdult:false,
+    withVideo:false,
     searching:'spider'
   })
 
   useEffect(()=>{
-      const fetchData = async ()=>{
+      const fetchData = async ():Promise<void>=>{
       setLoading(true)
-      await axios.get(Base_URL+ `api_key=${api_key}&language=ru-RU&page=${page}&include_adult=${filterSettings.adult}&query=${filterSettings.searching}`)
+      await axios.get<ICatalog>(Base_URL + `api_key=${api_key}&language=ru-RU&page=${page}&include_adult=${filterSettings.isAdult}&query=${filterSettings.searching}`)
       .then(res=>{
         setFilmsData(res.data)
         setLoading(false)
       })
     }
     fetchData()
-  },[Base_URL,api_key,filterSettings.adult,filterSettings.searching,page])
+  },[Base_URL,api_key,filterSettings.isAdult,filterSettings.searching,page])
 
 
 
-  const checkboxHandler=(event)=>{
+  const checkboxHandler=(event:ChangeEvent<HTMLInputElement>):void=>{
     setFilterSettings({...filterSettings, [event.target.name]:event.target.checked})
   }
-  const handleSearch=(searchEvent)=>{
-    startTransition(setFilterSettings({...filterSettings, [searchEvent.target.name]:searchEvent.target.value}))
+
+  const handleSearch=(searchEvent:ChangeEvent<HTMLInputElement>):void=>{
+      startTransition(()=>{
+        setFilterSettings({...filterSettings, [searchEvent.target.name]:searchEvent.target.value})
+      })
   }
-  const pageChange=(changePageEvent, value)=>{
+
+  const pageChange=(changePageEvent:ChangeEvent<unknown>, value:number):void=>{
     setPage(value)
   }
   
@@ -51,7 +64,13 @@ function App() {
             <FormControl>
               <FormGroup aria-label="position" row>
                 <FormControlLabel
-                control={<Switch color="primary" checked={filterSettings.adult} name="adult" onChange={checkboxHandler} size="medium"/>}
+                control={<Switch 
+                  color="primary" 
+                  checked={filterSettings.isAdult} 
+                  name="isAdult" 
+                  onChange={checkboxHandler} 
+                  size="medium"
+                />}
                 label="Adult"
                 labelPlacement="bottom"
               />
@@ -62,10 +81,11 @@ function App() {
                 <FormControlLabel
                 control={<Switch 
                   color="primary" 
-                  checked={filterSettings.video} 
-                  name="video" 
+                  checked={filterSettings.withVideo} 
+                  name="withVideo" 
                   onChange={checkboxHandler} 
-                  size="medium"/>}
+                  size="medium"
+                />}
                 label="With video"
                 labelPlacement="bottom"
               />
@@ -76,9 +96,8 @@ function App() {
                 control={<Input 
                   placeholder='search film by name'
                   value={filterSettings.searching}
-                  type="text"
                   name="searching"
-                  onChange={(e)=>{handleSearch(e)}}
+                  onChange={handleSearch}
                   size="medium"
                   />}
                 label="Search"
@@ -90,8 +109,9 @@ function App() {
         </div>
         <div className='main_content'>
               {/* <Lesson1/> */}
-          {filmsData.length!==0 ? 
+          {filmsData ? 
           filmsData.results.map((film)=>(
+            
             loading ? 
               <Skeleton variant="rectangular">
                 <Card info={film} key={film.id}/>
@@ -104,7 +124,7 @@ function App() {
             </div>
           }
         </div>
-        <Pagination count={filmsData.total_pages} page={page} onChange={pageChange} className="pagination"/>
+        <Pagination count={filmsData && filmsData.total_pages} page={page} onChange={pageChange} className="pagination"/>
         <br/>
     </div>
     
